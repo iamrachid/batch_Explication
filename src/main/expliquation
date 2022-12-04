@@ -1,0 +1,44 @@
+1/creer un fichier de configuration pour creer un objet job --- SpringBatchConfig.java
+2/creer une class metier  pour gerer les transaction -- BankTransaction.java
+3/ creer une interface  jpa repository BankTransactionRepository --- BankTransactionRepository.java
+4/configurer un job --- SpringBatchConfig.java
+ pour configurer j'ai besoin de jobbuilderFactory, StepBuilderFactory, objet ItemReader, Objet ItemWriter,
+ Objet ItemProcessor
+5/définir une methode de configuration qui permet de retourner un job  --- SpringBatchConfig.java
+6/ definir l'objet itemRider  --- SpringBatchConfig.java
+7/ definir l'objet itemProcessor
+ il y a deux methode pour definir soit 1/ dans le fichier --- SpringBatchConfig.java
+                                       2/ creer une class qui va contenir la configuration
+                                          --- BankTransactionitemProcessor.java
+ le traitement que je veux faire avec le processus est convertir la date de type string
+ a une format de type date et apres stocker dans l'objet et envoyer cette objet
+8/ definir l'objet itemWriteer  --- BankTransactionItemWriter.java
+    la fct write recoit une liste de type BankTransaction, apres il va stocker dans la base de donnée
+9/ pour que le job ne march pas apres le démarrage on ecrit spring.batch.job.enabled=false,parceque on veut démarrer une api rest
+10/ pour test le travail qu'on a fait on a besoin de démarrer le job
+    creer une class RestController pour lancer le job
+
+demarer l'aaplication
+    http://localhost:1600/
+pour voir la base de donnée
+
+****** maintenant on veut travailler avec compositeitmeProcessor concept
+
+11/ creer une novelle itemprocessor -- BankTransactionItemAnalyticsProcessor.java
+    ce processus il va prendre l'objet BanqueTransaction qui est deja traité par le premiere process
+    pour calculer le total debit et le total credit
+
+12/ maintenat la qst c'est comment on va utiliser pks process au meme temps
+    par la creation d'une list qui contient les process
+    et la modification du fichier de configuration pour utiliser tous les process qui sont dans la liste
+13/
+ -- BankTransactionItemAnalyticsProcessor.java //commenter @Component
+ -- BankTransactionItemProcessor.java //commenter @Component
+ -- SpringBatchConfig.java //creation d'une list qui contient les process
+                             creation du process1 et procces2
+
+14/ creer une methode rest pour affichet debit et credit total -- BankRestController.java
+
+lors de l'exuxtuon je dois lancer le job http://localhost:1600/ apres je peut consulter le total
+debit et le total credit http://localhost:1600/analytics
+t.qle processus garde les donneedans la base de données
